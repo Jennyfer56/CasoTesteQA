@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema de Login - CP02 QA</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --surface: #1a2028;
+      --border: #2a323d;
+      --text: #e6e9ed;
+      --text-muted: #8a939f;
+      --accent: #f4a261;
+      --accent-hover: #e8914a;
+      --error: #e76f51;
+      --success: #52b788;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 48px 40px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: normal;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-bottom: 36px;
+      font-style: italic;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-size: 15px;
+      font-family: Georgia, serif;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .toggle-senha {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 12px;
+      padding: 4px 8px;
+      font-family: 'Helvetica Neue', sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    .toggle-senha:hover { color: var(--accent); }
+
+    .checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .checkbox-wrapper input { cursor: pointer; }
+    .checkbox-wrapper label {
+      margin: 0;
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+      font-family: Georgia, serif;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 2px;
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'Helvetica Neue', sans-serif;
+      transition: background 0.2s;
+    }
+
+    button[type="submit"]:hover { background: var(--accent-hover); }
+
+    .mensagem {
+      margin-top: 20px;
+      padding: 12px 14px;
+      border-radius: 2px;
+      font-size: 13px;
+      text-align: center;
+      display: none;
+    }
+
+    .mensagem.erro {
+      display: block;
+      background: rgba(231, 111, 81, 0.1);
+      border: 1px solid var(--error);
+      color: var(--error);
+    }
+
+    .mensagem.sucesso {
+      display: block;
+      background: rgba(82, 183, 136, 0.1);
+      border: 1px solid var(--success);
+      color: var(--success);
+    }
+
+    .credenciais-teste {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+    }
+
+    .credenciais-teste strong {
+      color: var(--accent);
+      letter-spacing: 1px;
+    }
+
+    /* Tela de sucesso (dashboard) */
+    .dashboard {
+      text-align: center;
+      display: none;
+    }
+
+    .dashboard h2 {
+      font-size: 24px;
+      font-weight: normal;
+      margin-bottom: 16px;
+    }
+
+    .dashboard .user-info {
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      font-style: italic;
+    }
+
+    #btn-sair {
+      padding: 12px 32px;
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 2px;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+
+    #btn-sair:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Tela de Login -->
+    <div id="tela-login">
+      <h1>ACESSO</h1>
+      <p class="subtitle">CP02 — Compliance &amp; QA</p>
+
+      <form id="form-login" novalidate>
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <div class="input-wrapper">
+            <input type="email" id="email" name="email" placeholder="seu@email.com" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <div class="input-wrapper">
+            <input type="password" id="senha" name="senha" placeholder="••••••••" required minlength="6" />
+            <button type="button" id="btn-mostrar-senha" class="toggle-senha">MOSTRAR</button>
+          </div>
+        </div>
+
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="lembrar" name="lembrar" />
+          <label for="lembrar">Lembrar de mim</label>
+        </div>
+
+        <button type="submit" id="btn-entrar">Entrar</button>
+
+        <div id="mensagem-erro" class="mensagem"></div>
+      </form>
+
+      <div class="credenciais-teste">
+        <strong>CREDENCIAIS PARA TESTE</strong><br />
+        jennyfer@fiap.com.br / senha123<br />
+        admin@teste.com / admin123
+      </div>
+    </div>
+
+    <!-- Tela após login (Dashboard) -->
+    <div id="tela-sucesso" class="dashboard">
+      <h1>BEM-VINDA</h1>
+      <p class="subtitle">Login realizado com sucesso</p>
+      <h2 id="usuario-logado"></h2>
+      <p class="user-info">Sessão ativa</p>
+      <button id="btn-sair">Sair</button>
+    </div>
+  </div>
+
+  <script>
+    // Banco de dados simulado
+    const usuarios = [
+      { email: 'jennyfer@fiap.com.br', senha: 'senha123', nome: 'Jennyfer' },
+      { email: 'admin@teste.com',      senha: 'admin123', nome: 'Admin'    }
+    ];
+
+    const form = document.getElementById('form-login');
+    const emailInput = document.getElementById('email');
+    const senhaInput = document.getElementById('senha');
+    const mensagemErro = document.getElementById('mensagem-erro');
+    const telaLogin = document.getElementById('tela-login');
+    const telaSucesso = document.getElementById('tela-sucesso');
+    const usuarioLogado = document.getElementById('usuario-logado');
+    const btnMostrarSenha = document.getElementById('btn-mostrar-senha');
+    const btnSair = document.getElementById('btn-sair');
+
+    function mostrarMensagem(texto, tipo) {
+      mensagemErro.textContent = texto;
+      mensagemErro.className = 'mensagem ' + tipo;
+    }
+
+    function limparMensagem() {
+      mensagemErro.textContent = '';
+      mensagemErro.className = 'mensagem';
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      limparMensagem();
+
+      const email = emailInput.value.trim();
+      const senha = senhaInput.value;
+
+      // Validação: campos vazios
+      if (!email || !senha) {
+        mostrarMensagem('Por favor, preencha todos os campos.', 'erro');
+        return;
+      }
+
+      // Validação: formato de e-mail
+      const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!regexEmail.test(email)) {
+        mostrarMensagem('Formato de e-mail inválido.', 'erro');
+        return;
+      }
+
+      // Validação: tamanho mínimo da senha
+      if (senha.length < 6) {
+        mostrarMensagem('A senha deve ter no mínimo 6 caracteres.', 'erro');
+        return;
+      }
+
+      // Buscar usuário
+      const usuario = usuarios.find(u => u.email === email);
+
+      if (!usuario) {
+        mostrarMensagem('Usuário não encontrado.', 'erro');
+        return;
+      }
+
+      if (usuario.senha !== senha) {
+        mostrarMensagem('Senha incorreta.', 'erro');
+        return;
+      }
+
+      // Sucesso
+      mostrarMensagem('Login realizado com sucesso!', 'sucesso');
+      setTimeout(() => {
+        telaLogin.style.display = 'none';
+        telaSucesso.style.display = 'block';
+        usuarioLogado.textContent = usuario.nome;
+      }, 800);
+    });
+
+    // Botão mostrar/esconder senha
+    btnMostrarSenha.addEventListener('click', function () {
+      if (senhaInput.type === 'password') {
+        senhaInput.type = 'text';
+        btnMostrarSenha.textContent = 'OCULTAR';
+      } else {
+        senhaInput.type = 'password';
+        btnMostrarSenha.textContent = 'MOSTRAR';
+      }
+    });
+
+    // Botão sair
+    btnSair.addEventListener('click', function () {
+      telaSucesso.style.display = 'none';
+      telaLogin.style.display = 'block';
+      form.reset();
+      limparMensagem();
+      senhaInput.type = 'password';
+      btnMostrarSenha.textContent = 'MOSTRAR';
+    });
+  </script>
+</body>
+</html>
