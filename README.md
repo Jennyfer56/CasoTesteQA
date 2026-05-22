@@ -4,12 +4,6 @@ MVP de testes para um sistema de login, aplicando testes manuais e validações 
 
 > **Disciplina:** Compliance & QA · **Professora:** Larissa Schauer · **Instituição:** FIAP
 
-Integrantes:
-
-Jennyfer Lee
-Ivanildo
-Letícia Prado
-Paulo Neto
 ---
 
 ## Sobre o projeto
@@ -88,7 +82,7 @@ A aba **Resumo** consolida estatísticas (total, aprovados, reprovados, bloquead
 4. Clique em **Save**.
 5. Aguarde alguns minutos. O sistema ficará disponível em:
    ```
-   https://SEU-USUARIO.github.io/cp02-qa/login.html
+   https://Jennyfer56.github.io/CasoTesteQA/login.html
    ```
 
 ### 2. Atualizar a URL base nos testes
@@ -96,10 +90,10 @@ A aba **Resumo** consolida estatísticas (total, aprovados, reprovados, bloquead
 Nos arquivos `automation/CT01_Login_Valido.html` e `automation/CT02_Senha_Incorreta.html`, localize a linha:
 
 ```html
-<link rel="selenium.base" href="https://SEU-USUARIO.github.io/cp02-qa/" />
+<link rel="selenium.base" href="https://Jennyfer56.github.io/CasoTesteQA/" />
 ```
 
-Substitua `SEU-USUARIO` pelo seu usuário do GitHub e `cp02-qa` pelo nome do seu repositório.
+Substitua `SEU-USUARIO` pelo seu usuário do GitHub e `CasoTesteQA` pelo nome do seu repositório.
 
 ### 3. Instalar a extensão Katalon Recorder
 
