@@ -4,6 +4,12 @@ MVP de testes para um sistema de login, aplicando testes manuais e validações 
 
 > **Disciplina:** Compliance & QA · **Professora:** Larissa Schauer · **Instituição:** FIAP
 
+Integrantes:
+
+Jennyfer Lee
+Ivanildo
+Letícia Prado
+Paulo Neto
 ---
 
 ## Sobre o projeto
